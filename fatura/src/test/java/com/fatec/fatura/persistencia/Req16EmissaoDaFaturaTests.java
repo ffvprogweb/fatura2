@@ -1,5 +1,6 @@
 package com.fatec.fatura.persistencia;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fatec.fatura.model.Fatura;
 
-class Req01EmissaoDaFaturaTests {
+class Req16EmissaoDaFaturaTests {
 
 	Fatura fatura = new Fatura();
 	Logger logger = LogManager.getLogger(this.getClass());
@@ -21,11 +22,23 @@ class Req01EmissaoDaFaturaTests {
 			fatura = new Fatura("1", "71112917000126", "02/10/2026", "moveis planejados", "1000.50");
 			// entao fatura é registrada com data de emisssao igual a data de hoje
 			assertNotNull(fatura);
-			//String dataDeHoje = agendamento.obtemDataAtual();
-			//assertEquals(dataDeHoje, fatura.getDataEmissao());
 		} catch (Exception e) {
 			logger.info(">>>>>> ct01 - nao deveria falhar => " + e.getMessage());
 			fail("nao deveria falhar fatura valida");
+
+		}
+	}
+	@Test
+	void ct02_quando_cnpj_vazio_mensagem_de_erro() {
+		try {
+			// dado que que o cnpj é vazio
+			// quando confirmo a fatura
+			fatura = new Fatura("1", "", "02/10/2026", "moveis planejados", "1000.50");
+						
+		} catch (Exception e) {
+			// entao retorna mensagem de cnpj invalido
+			logger.info(">>>>>> ct02 erro=> " + e.getMessage());
+			assertEquals ("CNPJ invalido", e.getMessage());
 
 		}
 	}
